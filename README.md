@@ -33,7 +33,7 @@
 10. [Proposed architecture](#10-proposed-architecture)
 11. [Repository structure](#11-repository-structure)
 12. [Development and setup status](#12-development-and-setup-status)
-13. [Team responsibilities](#13-team-responsibilities)
+13. [Team roles and independent work plan](#13-team-roles-and-independent-work-plan)
 14. [Schedule](#14-schedule)
 15. [Demo flow](#15-demo-flow)
 16. [Limitations and risks](#16-limitations-and-risks)
@@ -379,19 +379,93 @@ No app tests, data validation, browser playback checks, or accessibility checks 
 
 ---
 
-## 13. Team responsibilities
+## 13. Team roles and independent work plan
 
-Five suggested primary owners; responsibilities can overlap according to skills.
+The five workstreams below are designed to proceed in parallel after the team agrees on the shared interfaces. Each person owns a distinct output so teammates can build, review, and hand off work without waiting for another feature to be finished.
 
-| Role | Main work | Partners |
-|---|---|---|
-| Frontend / UX | Hero, layout, responsive design, player controls | Visualization and accessibility |
-| Data / integration | Download and validate GISTEMP, document metadata, load data | Science and frontend |
-| Audio / interaction | Web Audio synthesis, playback state, mapping controls | Frontend and accessibility |
-| Visualization | Chart/timeline, EIC visual pairing, synchronization | Data and frontend |
-| Science / accessibility / demo | Check scientific claims and credits; accessibility review; demo and submission narrative | Whole team |
+### Shared setup and working agreement
 
-All members should be able to explain the dataset and the data-to-sound mapping. A separate backend service is not expected for the proposed MVP.
+1. One integrator creates the app scaffold and commits the shared TypeScript interfaces first.
+2. Each workstream starts from that scaffold on its own branch and owns the files listed below.
+3. If a task needs a shared interface changed, propose the change before editing another owner’s files.
+4. Merge small pull requests into the integration branch; the integrator resolves conflicts and connects the modules.
+5. Each owner provides a short handoff: what is ready, how to use it, any assumptions, and what remains.
+
+Suggested branch names: `feature/app-shell`, `feature/data`, `feature/audio`, `feature/chart`, and `feature/content-a11y`.
+
+### Parallel task assignments
+
+| Member | Independent task | Owns these outputs | Handoff |
+|---|---|---|---|
+| 1. Frontend / integration | Create the React/Vite shell, shared TypeScript interfaces, hero, page layout, and module integration | `src/App.tsx`, `src/components/HeroSection.tsx`, `src/data/types.ts`, `src/styles/` | Running page shell, shared data types, and clearly marked slots for player, chart, and explanatory text |
+| 2. Data / science | Select and validate the GISTEMP global series; prepare the local data file and provenance notes | `src/data/loadObservations.ts`, `public/data/gistemp-global.json`, `docs/data-notes.md` | Data file matching the shared types, plus exact source/version/units/baseline/date notes |
+| 3. Audio / interaction | Build the pure value-to-pitch mapping and browser audio controller; handle start/stop and cleanup | `src/features/audio/sonification.ts`, `src/features/audio/audioController.ts` | Functions matching the audio contract below, with mapping limits documented and held constant across comparisons |
+| 4. Visualization | Build the responsive SVG temperature chart/timeline and period comparison selectors | `src/features/chart/TemperatureChart.tsx`, `src/features/chart/PeriodComparison.tsx`, `src/features/chart/chart.css` | Components matching the chart contract below; selecting a point reports its index to the parent |
+| 5. Content / accessibility / demo | Prepare concise science copy, interaction/accessibility review checklist, asset credits, and demo script | `src/content/copy.ts`, `docs/accessibility-checklist.md`, `docs/asset-credits.md`, `docs/demo-script.md` | Ready-to-use approved copy and checklists; no uncredited images or unsupported science claims |
+
+Role labels are recommendations; assign them to match each member’s strengths. The outputs remain separated by owner even if another member helps.
+
+### Shared data contract
+
+The data owner and UI owners should use this shape so the chart and audio modules can be built independently:
+
+```ts
+export type Observation = {
+  /** ISO year-month, for example "2020-01". */
+  period: string;
+  /** Temperature anomaly in degrees Celsius; null means missing, never zero. */
+  anomalyC: number | null;
+};
+
+export type TemperatureDataset = {
+  metadata: {
+    title: string;
+    sourceUrl: string;
+    accessedDate: string;
+    variable: string;
+    units: "°C";
+    baseline: string;
+    temporalResolution: "monthly" | "annual";
+    startPeriod: string;
+    endPeriod: string;
+    updateCadence: string;
+    notes: string[];
+  };
+  observations: Observation[];
+};
+```
+
+The actual selected NASA file may require a documented conversion before it matches this contract. Do not silently change its units, baseline, aggregation, or missing values.
+
+### Shared component and audio contracts
+
+- `TemperatureChart` receives `{ observations: Observation[], selectedIndex: number, onSelectIndex: (index: number) => void, label: string }`. It renders data and selection only; it does not own audio playback.
+- `PeriodComparison` receives `{ availablePeriods: string[], periodA: string, periodB: string, onSelectPeriodA: (period: string) => void, onSelectPeriodB: (period: string) => void }` and reports selections to the parent.
+- `PitchScale` contains `{ minAnomalyC, maxAnomalyC, minHz, maxHz }`, with one validated, fixed scale for both comparison periods.
+- `anomalyToFrequency(anomalyC: number | null, scale: PitchScale): number | null` is deterministic, returns a frequency in hertz, and returns `null` for a missing value.
+- `createAudioController(scale)` returns `{ playValue(anomalyC: number | null, durationMs: number): void, stop(): void, dispose(): void }`. The app owns playback timing; the controller creates and stops tones.
+- `App` owns the shared selected index, play state, selected comparison periods, and coordination between chart and audio.
+
+The integrator should accept interface changes only after the affected owners agree, so work remains easy to combine.
+
+### Definition of done for each workstream
+
+- The output exists in the agreed files and follows the shared contracts.
+- Source, units, baseline, and asset credits are included wherever relevant.
+- Empty, missing, and error states are described rather than silently hidden.
+- The owner adds a short README/PR handoff with assumptions and remaining work.
+- After integration, the team checks the complete path in the browser and reviews keyboard access and the demo flow.
+
+### Independent verification owners for 14–15 November
+
+| Member | Verification / release responsibility |
+|---|---|
+| 1. Frontend / integration | Confirm CI workflow, production build, deployed URL, and end-to-end smoke check |
+| 2. Data / science | Check labels, units, dates, baseline, missing values, and source attribution against the chosen NASA file |
+| 3. Audio / interaction | Check playback start/stop, seeking, comparison consistency, and browser audio behavior |
+| 4. Visualization | Check chart selection, comparison periods, responsive layout, and synchronization |
+| 5. Content / accessibility / demo | Check keyboard and screen-reader experience, text alternatives, asset credits, and demo/submission narrative |
+A separate backend service is not expected for the proposed MVP. All members should be able to explain the selected dataset and how it relates to the sound.
 
 ---
 
@@ -523,6 +597,9 @@ During implementation and release, keep changes focused on the agreed MVP. When 
 ---
 
 *This README describes the current project plan, not an implemented application. Update it as the team makes decisions and the repository changes.*
+
+
+
 
 
 
