@@ -5,7 +5,7 @@
 **Team:** 5 members  
 **Working title:** *Hear the Heat*  
 **Challenge:** NASA Space Apps Challenge 2026 — “The Earth Information Jukebox”  
-**Target:** A working web app and polished demo, built during the event
+**Team schedule:** Complete the working app build by 13 November; use 14–15 November for verification, testing, CI/CD, deployment, and demo/submission
 
 ---
 
@@ -178,26 +178,25 @@ These are primary responsibilities rather than silos. Every member should be abl
 
 ---
 
-## 9. Preparation and event schedule
+## 9. Build and event schedule
 
-### By 13 November — preparation
+### By 13 November — implementation complete (team target)
 
-- Read the complete challenge statement and NASA-provided resources.
-- Confirm Kopargaon event instructions, including when project development may begin.
-- Inspect the chosen EIC visualization and GISTEMP data; record source, credits, baseline, and aggregation.
-- Agree on the one-story MVP, mapping hypothesis, responsibilities, and demo flow.
-- Install tools and learn any needed browser-audio basics using a generic practice example.
-- Sketch the interface and prepare a task board.
+- Complete the core flow: hero → guided temperature story → synchronized chart/audio → two-period comparison.
+- Prepare and validate the selected NASA data; record source, credits, units, baseline, and aggregation.
+- Implement the sound mapping and explain it in the interface.
+- Finish responsive layout and essential accessibility support.
+- Freeze features and prepare a release candidate for verification.
 
-Do not assume that completing the competition app by 13 November is allowed. The global hackathon is scheduled for 14–15 November, and local event rules may specify when development can start. Check with the Kopargaon organizer if unclear.
+### 14–15 November — verification, testing, CI/CD, and deployment
 
-### 14–15 November — build and submit
+1. Verify the app’s user journey, measurements, chart, audio, and attribution.
+2. Run functional, browser, responsive, keyboard, and screen-reader checks.
+3. Confirm CI checks and the production build pipeline.
+4. Deploy the app and verify the deployed version; keep a local/recorded fallback demo.
+5. Finalize the project page and submit before the official deadline.
 
-1. Start with one end-to-end path: choose a period → see the value → hear the mapped sound → understand the mapping.
-2. Add the comparison and accessibility controls.
-3. Check data labels, citations, the EIC pairing, and failure behavior.
-4. Record a short backup demo in case the live app or network fails.
-5. Submit before the official deadline shown for the event and local time zone.
+> **Event-rule assumption to confirm:** This is the team’s intended schedule, not a statement of NASA rules. NASA lists the global event for 14–15 November ([official schedule](https://www.spaceappschallenge.org/2026/)). The [public Kopargaon listing](https://unstop.com/college-fests/nasas-space-apps-challenge-kopargoan-nasa-space-app-challenge-foundation-507854/amp) does not specify whether challenge-specific implementation may begin before the event. Another 2026 local event’s [published instructions](https://www.spaceappschallenge.org/2026/local-events/faisalabad/) explicitly say to begin building on November 14. Confirm the pre-event build plan with the Kopargaon organizer and current participant guidance before treating it as approved. If pre-event implementation is not allowed, use 7–13 November for general tool practice, data familiarization, and planning, and move the build work into the event window.
 
 ---
 
@@ -263,5 +262,7 @@ These links are research references, not blanket permission to reuse assets. Che
 
 **Status:** concept and UX direction documented; no implementation or dataset validation has been completed.  
 **Next team decision:** read the full challenge resources, confirm event start rules, and validate that the chosen EIC visualization and GISTEMP series can be paired accurately.
+
+
 
 
