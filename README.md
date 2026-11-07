@@ -7,7 +7,7 @@
 **Project status:** Planning / documentation only  
 **Challenge:** NASA Space Apps Challenge 2026 — “The Earth Information Jukebox”  
 **Team:** 5 members  
-**Target:** Working web app and polished demo during the 14–15 November 2026 hackathon
+**Team schedule:** Complete the build by 13 November; reserve 14–15 November for verification, testing, CI/CD, deployment, and demo/submission
 
 > [!IMPORTANT]
 > This repository currently contains project documentation, not a runnable application. No frontend, backend, sonification engine, or dataset has been implemented or validated yet. Stack, architecture, and feature plans in this README are recommendations until the team confirms them and builds them.
@@ -282,7 +282,7 @@ This stack is a recommendation, not an as-built description. If the team has a f
 
 ```mermaid
 flowchart LR
-    subgraph BuildTime[Preparation during the event]
+    subgraph BuildTime[Implementation phase by 13 November, if permitted]
       A[NASA GISTEMP data] --> B[Validation and conversion script]
       B --> C[Static JSON with source metadata]
     end
@@ -397,23 +397,23 @@ All members should be able to explain the dataset and the data-to-sound mapping.
 
 ## 14. Schedule
 
-### By 13 November — preparation
+### By 13 November — implementation complete (team target)
 
-- Read the complete challenge statement and NASA resources.
-- Confirm the Kopargaon event’s project-start rules with the organizer.
-- Review the data and EIC visual metadata and record the source/credits.
-- Agree on the MVP, role owners, stack, first mapping, and demo sequence.
-- Install tools and learn unfamiliar tools with generic practice exercises.
-- Sketch the interface and prepare a task board.
+- Complete the app’s core user journey: hero → guided story → synchronized data/chart/audio → period comparison.
+- Prepare the selected NASA data and document units, baseline, dates, and source.
+- Implement the proposed audio mapping and visible explanation.
+- Complete the essential accessibility and responsive UI work.
+- Freeze feature scope and produce a build that is ready for final verification.
 
-### 14–15 November — hackathon build
+### 14–15 November — verification and release
 
-1. Build the end-to-end path first: select period → see value → hear sound → inspect mapping.
-2. Add the second-period comparison and essential accessibility controls.
-3. Check source labels, credits, data/visual compatibility, and demo fallback.
-4. Prepare the submission and demo before the event deadline.
+1. Verify the complete user journey and all data labels against the selected source.
+2. Run functional, browser, responsive, keyboard, and screen-reader checks.
+3. Set up or confirm CI checks and production build workflow.
+4. Deploy the app, verify the deployed version, and keep a local/recorded demo fallback.
+5. Finalize the project page and demo submission before the official deadline.
 
-**Schedule note:** The global event is 14–15 November. The README does not assume that the competition app can be completed before the event. Follow the rules communicated by the Kopargaon event organizer.
+> **Event-rule assumption to confirm:** This is the team’s intended schedule, not a statement of NASA rules. NASA lists the global event for 14–15 November ([official schedule](https://www.spaceappschallenge.org/2026/)). The [public Kopargaon listing](https://unstop.com/college-fests/nasas-space-apps-challenge-kopargoan-nasa-space-app-challenge-foundation-507854/amp) does not specify whether challenge-specific implementation may begin before the event. Another 2026 local event’s [published instructions](https://www.spaceappschallenge.org/2026/local-events/faisalabad/) explicitly say to begin building on November 14. Confirm the pre-event build plan with the Kopargaon organizer and current participant guidance before treating it as approved. If pre-event implementation is not allowed, use the 7–13 November period for general tool practice, data familiarization, and planning, then move the build work into the event window.
 
 ---
 
@@ -491,7 +491,7 @@ NASA media guidance: [NASA Images and Media](https://www.nasa.gov/nasa-brand-cen
 
 ## 19. Contributing
 
-During the hackathon, keep changes focused on the agreed MVP. When adding a feature or changing the data mapping:
+During implementation and release, keep changes focused on the agreed MVP. When adding a feature or changing the data mapping:
 
 - State whether it is implemented, proposed, or experimental.
 - Keep NASA challenge requirements separate from team design decisions.
@@ -523,4 +523,6 @@ During the hackathon, keep changes focused on the agreed MVP. When adding a feat
 ---
 
 *This README describes the current project plan, not an implemented application. Update it as the team makes decisions and the repository changes.*
+
+
 
